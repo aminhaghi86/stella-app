@@ -64,12 +64,13 @@ export default defineNuxtConfig({
 npm run dev
 ```
 
-## Stella
+## Run Stella on terminal
 ```javascript 
-in terminal type => stella
+ stella
 ```
+## USE Stella CLI on terminal
 ```javascript 
-to use stella cli simply type = > stella serve
+  stella serve
 ```
 
 # Enjoy your chat!
