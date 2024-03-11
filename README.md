@@ -1,75 +1,75 @@
-# Nuxt 3 Minimal Starter
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+# AI Chat Application
 
-## Setup
+This project provides a streamlined setup process for a Nuxt.js application that seamlessly integrates with the Stella framework. It offers a convenient environment for building interactive chat applications or leveraging Stella's features within your Nuxt projects.
 
-Make sure to install the dependencies:
+
+
+## Installation
+* Clone the Repository
+
+* Install dependency of this project run
 
 ```bash
-# npm
-npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
+  npm install
 ```
 
-## Development Server
+* Stella Configuration
+#### Setup STELLA (simple tutorial in documentation) : https://docs.stellaframework.com/Getting_Started.html)
 
-Start the development server on `http://localhost:3000`:
+### Nuxt.js Configuration
 
-```bash
-# npm
+1. Create .env File:
+At the root of your project, create a file named .env. This file will store environment variables for your Nuxt.js application.
+
+
+
+
+
+```javascript
+BASE_URL="http://localhost:5001"  # Replace with your backend URL
+SOCKET_HOST="localhost"
+SOCKET_PORT="5001"
+SOCKET_SSL="false"
+SOCKET_NAMESPACE="/chat"
+```
+
+
+## Update nuxt.config.ts:
+Open nuxt.config.ts and add the following code block:
+
+```javascript
+export default defineNuxtConfig({
+  devtools: { enabled: true },
+  runtimeConfig: {
+    public: {
+      SOCKET_HOST: process.env.SOCKET_HOST,
+      SOCKET_PORT: process.env.SOCKET_PORT,
+      SOCKET_SSL: process.env.SOCKET_SSL,
+      SOCKET_NAMESPACE: process.env.SOCKET_NAMESPACE,
+      DEFAULT_WORKSPACE_ID: process.env.DEFAULT_WORKSPACE_ID, // Add this line if needed
+    },
+    private: {
+      // Define private variables here (not exposed on client-side)
+    },
+  },
+});
+```
+
+## Development
+
+## Client :
+ #### Execute the following command
+```javascript 
 npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
 ```
 
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
+## Stella
+```javascript 
+in terminal type => stella
+```
+```javascript 
+to use stella cli simply type = > stella serve
 ```
 
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+# Enjoy your chat!
