@@ -5,7 +5,12 @@
 
     <div class="chat-input">
       <h2>chat</h2>
-      <input type="text" v-model="message" @keyup.enter="sendMessage" placeholder="Enter something..." />
+      <input
+        type="text"
+        v-model="message"
+        @keyup.enter="sendMessage"
+        placeholder="Enter something..."
+      />
       <button @click="sendMessage" class="send-btn">Send</button>
     </div>
     <hr />
@@ -51,6 +56,7 @@ export default {
   },
 
   methods: {
+    // creates a session manager for login and chat info, and defines the chat path on the server.
     configure() {
       this.socket_url = `${this.config.ssl ? "https://" : "http://"}${
         this.config.host
@@ -61,7 +67,11 @@ export default {
 
       this.socketio_namespace = "/chat";
     },
-
+    // The authHeaders method  checks if you're logged in (by looking for an access token in your session data).
+    //  If not logged in, it doesn't add any special headers.
+    //  But if you are logged in, it creates a special authorization header that tells the server you have permission to chat.
+    // This header includes a "Bearer" keyword followed by your access token, kind of like a secret handshake that proves you're allowed to chat.
+    // It also adds another header indicating the type of data being sent (JSON).
     authHeaders() {
       // Check if the user is logged in
       if (!this.session.access_token) return {};
@@ -71,15 +81,18 @@ export default {
         "Content-Type": "application/json",
       };
     },
-
+    // This method (composeUrltakes) a piece of the address (endpoint) like chat or login
+    // Combines it with the other known parts to create the full website address you need to send requests to.
     composeUrl(endpoint) {
       return `${this.config.ssl ? "https://" : "http://"}${this.config.host}${
         this.config.port ? `:${this.config.port}` : ""
       }/${endpoint}`;
     },
-
+    // The connect method is similar to beginning a chat session.
+    // It first checks if the chat server is ready,
+    // Then attempts to reconnect you to the last chat room you used, so you can continue from where you left off.
     async connect() {
-      //        this.socket.connect();
+      //this.socket.connect();
 
       try {
         await this.verifyConnection();
@@ -110,7 +123,9 @@ export default {
     async onDisconnect(...arg) {
       console.log("on disconnect", arg);
     },
-
+    // verifyConnection method
+    // It sends a quick "ping" message to the server to see if it's responding.
+    // If it gets a successful response (a 200 code), it means the server is up and ready for chat. If there's no response or something goes wrong
     async verifyConnection() {
       try {
         const response = await axios.get(this.composeUrl("ping"));
@@ -121,6 +136,11 @@ export default {
       }
     },
 
+    // connectLatest
+    // This method tries to automatically connect you back to your most recently used chat room.
+    //  It first checks if you're logged in and then retrieves your user information.
+    // If you have a record of the last room you used, it will try to reconnect you to that one.
+    //  If there's no record or if something goes wrong, it creates a new default chat room for you and connects you to that instead.
     async connectLatest() {
       if (!this.session.access_token) {
         return;
@@ -149,7 +169,9 @@ export default {
         throw new Error("User not found. Please login again.", e);
       }
     },
-
+    // getUser Method
+    // When you're logged in, this method fetches details about your user account.
+    // It sends a secure request to the server and, if successful (response code 200), it returns your user information
     async getUser() {
       try {
         const response = await axios.get(this.composeUrl("user"), {
@@ -163,7 +185,8 @@ export default {
         );
       }
     },
-
+    // This getWorkspaceById method lets you get information about a particular chat room by providing its unique ID.
+    // It sends a request to the server with the ID, and if successful (response code 200), it returns the details about that chat room.
     async getWorkspaceById(workspace_id) {
       try {
         const response = await axios.get(
@@ -178,7 +201,9 @@ export default {
         throw new Error(`Failed to get workspace. (${e.statusCode}).`);
       }
     },
-
+    //  connectToWorkspace method
+    // It's like joining a special chat room. First, it finds out about the room you picked using its ID, saves that ID on your device, makes a new chat space for that room,
+    // Then links you to it. Then, you can start chatting in that room, sending and getting messages.
     async connectToWorkspace(workspace_id) {
       try {
         const response = await axios.get(
@@ -200,7 +225,10 @@ export default {
         return;
       }
     },
-
+    // Creates a new chat session
+    // This method createChat, lets you start a new chat. It sends a request to the server with the workspace ID we provide.
+    // If successful (meaning the server responds with a 200 code), it retrieves the chat ID assigned by the server and stores it in your local storage.
+    // It then returns the chat ID, which is likely used to connect to that specific chat session later.
     async createChat(workspace_id) {
       try {
         const response = await axios.post(
@@ -232,6 +260,9 @@ export default {
         throw new Error(`Failed to create chat. (${ex}).`);
       }
     },
+
+    // The connectToChat method sets up a realtime connection to the chat server for a particular chat session.
+    // It gets a secure connection string, creates a s connection, and adds listeners for messages and connection changes.
 
     async connectToChat() {
       try {
@@ -269,6 +300,11 @@ export default {
         throw new Error(`Failed to create chat. (${error}).`);
       }
     },
+
+    // This method fetches a unique identifier (connection string) required to connect to a specific chat session on the server
+    // It first builds a secure request with authentication headers, then retrieves the connection string from the server's response.
+    // If successful, it stores the connection string and returns it for establishing the WebSocket connection.
+    // Any errors during the process are caught and reported for debugging.
     async getConnectionString(chatId) {
       try {
         const url = this.composeUrl(`chat/authorize?chat_id=${chatId}`);
@@ -292,7 +328,10 @@ export default {
         throw new Error(`Failed to create chat. (${ex}).`);
       }
     },
-
+    // The sendMessage method  sends a message to the chat server, ensuring authentication and proper message authorization along the way.
+    // At first verifies that you're connected to a chat,
+    // Fetches a unique message authorization string from the server, constructs a secure message object with the authorization details,
+    // And then transmits the message through the established WebSocket connection, awaiting a response from the server.
     async sendMessage() {
       const message = this.message;
       this.messages.push({
@@ -350,6 +389,8 @@ export default {
       } finally {
       }
     },
+    // The Logout methods  cleans out any chat session details stored on your device form localstorage and
+    // brings you back to the starting point where you can  login again!
     logout() {
       localStorage.removeItem("session");
       navigateTo("/login");
@@ -359,8 +400,8 @@ export default {
 </script>
 
 <style scoped>
-.container{
-  background: linear-gradient(40deg,#ccc,#ccc,#cddd);
+.container {
+  background: linear-gradient(40deg, #ccc, #ccc, #cddd);
   max-height: 100vh;
   padding: 1rem;
 }
@@ -419,5 +460,4 @@ export default {
   margin-bottom: 10px;
   text-align: left;
 }
-
 </style>

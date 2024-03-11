@@ -45,6 +45,8 @@ export default {
     };
   },
   methods: {
+
+    //Handles login process, sends credentials, stores token in localstorage.
     async login() {
       try {
         const response = await axios.post("http://localhost:5001/auth/login", {

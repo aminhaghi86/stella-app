@@ -37,6 +37,9 @@ export default {
     };
   },
   methods: {
+    // When you click "Register button" it sends the server, Sending  email and password from the UI .
+    // If the server accepts your request,
+
     async handleSubmit() {
       try {
         const response = await axios.post(

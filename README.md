@@ -69,11 +69,11 @@ npm run dev
 
 ## Run Stella on terminal
 ```javascript 
- stella
+ stella serve
 ```
 ## USE Stella CLI on terminal
 ```javascript 
-  stella serve
+  stella
 ```
 
 # Enjoy your chat!
