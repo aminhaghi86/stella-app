@@ -73,7 +73,6 @@
         <input
           type="text"
           v-model="message"
-          @keyup="handleKeyUp"
           @keyup.enter="sendMessage"
           placeholder="Enter something..."
           class="chat__content__send__input"
@@ -81,9 +80,9 @@
         <button
           @click="sendMessage"
           class="chat__content__send__button"
-          :style="{ background: buttonColor }"
+          
         >
-          <SendSvg />
+          <SendSvg :style="{color:buttonColor}"/>
         </button>
       </div>
     </div>
@@ -122,7 +121,7 @@ export default {
   },
   computed: {
     buttonColor() {
-      return this.message ? "#cccccc" : "none";
+      return this.message ? "#34B990" : "#9FA1A2";
     },
     hasMessages() {
       return this.messages.length > 0;
@@ -278,13 +277,13 @@ export default {
             headers: this.authHeaders(),
           }
         );
-        // const chat = await axios.get(
-        //   this.composeUrl(`workspace/${workspace_id}/chats`),
-        //   {
-        //     headers: this.authHeaders(),
-        //   }
-        // )
-        // console.log('chat',chat);
+        const chat = await axios.get(
+          this.composeUrl(`workspace/${workspace_id}/chats`),
+          {
+            headers: this.authHeaders(),
+          }
+        )
+        console.log('chat',chat);
         console.log("response workspace", response);
         return response.data.workspace;
       } catch (e) {
