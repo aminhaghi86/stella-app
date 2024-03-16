@@ -81,6 +81,7 @@
         <input
           type="text"
           v-model="message"
+          :required="true"
           @keyup.enter="sendMessage"
           placeholder="Enter something..."
           class="chat__content__send__input"
@@ -427,6 +428,11 @@ export default {
     // And then transmits the message through the established WebSocket connection, awaiting a response from the server.
     async sendMessage() {
       const message = this.message;
+      if (!this.message) {
+        // Handle empty name
+        console.error("Name is required!");
+        return;
+      }
       this.messages.push({
         type: "user",
         color: "#000000",
@@ -554,7 +560,6 @@ export default {
         .logout-svg {
           width: 20px;
           height: 20px;
-          
         }
         &:hover .logout-svg path {
           stroke: white;
