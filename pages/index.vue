@@ -54,18 +54,28 @@
             incorporates Large Language Models.
           </p>
         </div>
+
         <ul v-if="hasMessages" class="chat__content__main__messages">
           <li
             v-for="message in messages"
             :key="message.text"
-            class="chat__content__main__messages__item"
+            :class="{
+              chat__content__main__messages__item: true,
+              user: message.type === 'user',
+              stella: message.type === 'stella',
+            }"
           >
             <span
-              :style="{ color: message.color, fontSize: message.size }"
               class="chat__content__main__messages__item__text"
             >
               {{ message.text }}
             </span>
+          </li>
+          <li
+            v-if="waiting_for_response"
+            class="chat__content__main__messages__item stella"
+          >
+            <LoadingEffect />
           </li>
         </ul>
       </div>
@@ -77,12 +87,8 @@
           placeholder="Enter something..."
           class="chat__content__send__input"
         />
-        <button
-          @click="sendMessage"
-          class="chat__content__send__button"
-          
-        >
-          <SendSvg :style="{color:buttonColor}"/>
+        <button @click="sendMessage" class="chat__content__send__button">
+          <SendSvg :style="{ color: buttonColor }" />
         </button>
       </div>
     </div>
@@ -104,7 +110,6 @@ export default {
       initial_message: null,
       messages: [],
       message: "",
-      buttonColor: "red",
     };
   },
   mounted() {
@@ -282,8 +287,8 @@ export default {
           {
             headers: this.authHeaders(),
           }
-        )
-        console.log('chat',chat);
+        );
+        console.log("chat", chat);
         console.log("response workspace", response);
         return response.data.workspace;
       } catch (e) {
@@ -556,7 +561,7 @@ export default {
 
   &__content {
     height: 100vh;
-    overflow-y: auto;
+    overflow-y: scroll;
     &__main {
       min-height: 80vh;
 
@@ -579,9 +584,38 @@ export default {
       }
 
       &__messages {
+        max-width: 60rem;
         list-style: none;
+        padding: 1rem 2rem;
+        display: flex;
+        flex-direction: column;
+        margin: 0 auto;
+        gap: 2rem;
+
         &__item {
+          animation: slideUp 0.5s ease-in-out forwards;
+          display: flex;
+
           &__text {
+            max-width: 30rem;
+            transform: translateY(0);
+            border-radius: 2rem;
+            display: block;
+            padding: 1rem;
+          }
+          &.user {
+            justify-content: end;
+            .chat__content__main__messages__item__text {
+              background-color: #34b990;
+              border-bottom-right-radius: 0;
+            }
+          }
+          &.stella {
+            justify-content: start;
+            .chat__content__main__messages__item__text {
+              background-color: #cbcdce;
+              border-bottom-left-radius: 0;
+            }
           }
         }
       }
@@ -619,6 +653,19 @@ export default {
         right: 5px;
       }
     }
+  }
+}
+@keyframes slideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(100vh);
+  }
+  1% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 </style>
