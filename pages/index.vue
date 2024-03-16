@@ -65,9 +65,7 @@
               stella: message.type === 'stella',
             }"
           >
-            <span
-              class="chat__content__main__messages__item__text"
-            >
+            <span class="chat__content__main__messages__item__text">
               {{ message.text }}
             </span>
           </li>
@@ -497,7 +495,7 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 @import "@/assets/scss/components/button.scss";
 .chat {
   display: grid;
@@ -552,6 +550,16 @@ export default {
         display: flex;
         align-items: center;
         justify-content: flex-start;
+        gap: 0.5rem;
+        .logout-svg {
+          width: 20px;
+          height: 20px;
+          
+        }
+        &:hover .logout-svg path {
+          stroke: white;
+          transition: all 0.5s ease-in-out;
+        }
       }
 
       &__avatar {
@@ -602,6 +610,7 @@ export default {
             border-radius: 2rem;
             display: block;
             padding: 1rem;
+            line-height: 1.5;
           }
           &.user {
             justify-content: end;

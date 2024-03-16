@@ -1,5 +1,5 @@
 <template>
-  <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+  <svg viewBox="0 0 24 24" fill="none" class="logout-svg">
     <path
       d="M15 3H7C5.89543 3 5 3.89543 5 5V19C5 20.1046 5.89543 21 7 21H15"
       stroke="#000000"
@@ -19,4 +19,6 @@
 
 <script setup></script>
 
-<style lang="scss" scoped></style>
+<style lang="scss">
+
+</style>
