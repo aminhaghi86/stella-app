@@ -21,7 +21,7 @@
       />
     </div>
     <div class="form-group">
-      <button type="submit" class="btn btn-primary">Login</button>
+      <button type="submit" class="button --black">Login</button>
       <NuxtLink to="/register">go to register</NuxtLink>
       <div v-if="loginError" class="error-message">{{ loginError }}</div>
     </div>
@@ -75,6 +75,7 @@ export default {
 </script>
 
 <style scoped>
+@import "@/assets/scss/components/button.scss";
 .login-form {
   max-width: 600px;
   margin: 0 auto;
@@ -99,14 +100,6 @@ export default {
   box-sizing: border-box;
 }
 
-.btn-primary {
-  background-color: #007bff;
-  color: white;
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
 
 .error-message {
   color: red;

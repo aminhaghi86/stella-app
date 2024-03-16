@@ -20,7 +20,7 @@
         class="form-control"
       />
     </div>
-    <button type="submit" class="btn btn-primary">Register</button>
+    <button type="submit" class="button --black">Register</button>
     <NuxtLink to="/login">go to Login</NuxtLink>
   </form>
 </template>
@@ -69,6 +69,7 @@ export default {
 </script>
 
 <style scoped>
+@import "@/assets/scss/components/button.scss";
 .register-form {
   max-width: 600px;
   margin: 0 auto;
@@ -94,18 +95,19 @@ export default {
   box-sizing: border-box;
 }
 
-.btn-primary {
+/* .btn-primary {
   background-color: #007bff;
   color: white;
   padding: 0.5rem 1rem;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-}
+} */
 
 .error-message {
   color: red;
   font-weight: bold;
   margin-top: 0.5rem;
 }
+
 </style>
