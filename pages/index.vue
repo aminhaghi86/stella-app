@@ -6,7 +6,7 @@
           class="chat__header__actions__new-chat button --wide"
           @click="clearMessage()"
         >
-          New Chat
+          <AddButton /> New Chat
         </button>
         <div class="chat__header__actions__contacts">
           <div class="chat__header__actions__contacts__item">
@@ -520,6 +520,24 @@ export default {
       padding: 1rem;
       height: 20%;
       &__new-chat {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        transition: all 0.5s ease-in-out;
+        .add-button {
+          width: 20px;
+          height: 20px;
+        }
+        &:hover {
+          border: 0.5px solid #000;
+          background-color: #fff;
+          color: #000;
+        }
+        &:hover .add-button path {
+          stroke: #000;
+          transition: all 0.5s ease-in-out;
+        }
       }
 
       &__contacts {
