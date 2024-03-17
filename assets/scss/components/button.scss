@@ -19,6 +19,9 @@
       background-color: #ff0000;
       color: #fff;
     }
+    @media (max-width: 768px) {
+      font-size: 0.75rem;
+    }
   }
   &.--wide-primary {
     width: 100%;
@@ -27,7 +30,10 @@
   }
   &.--wide-secondary {
     width: 90%;
-    @media (max-width: 768px) {
+  }
+  @media (max-width: 768px) {
+    &.--white,
+    &.--wide-secondary {
       font-size: 0.75rem;
     }
   }

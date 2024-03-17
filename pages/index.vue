@@ -98,7 +98,6 @@
 import axios from "axios";
 import io from "socket.io-client";
 import Session from "~/utils/session";
-
 export default {
   middleware: "authenticated",
   name: "chat",
@@ -502,6 +501,7 @@ export default {
 </script>
 
 <style lang="scss">
+@import "@/assets/scss/_colors.scss";
 @import "@/assets/scss/components/button.scss";
 .chat {
   display: grid;
@@ -510,7 +510,7 @@ export default {
     position: sticky;
     display: flex;
     flex-direction: column;
-    border-right: 1px solid #cccccc80;
+    border-right: 1px solid $color-grey-light;
     height: 100%;
     &__actions {
       display: flex;
@@ -530,12 +530,12 @@ export default {
           height: 20px;
         }
         &:hover {
-          border: 0.5px solid #000;
-          background-color: #fff;
-          color: #000;
+          border: 0.5px solid $color-black; 
+          background-color: $color-white; 
+          color: $color-black;
         }
         &:hover .add-button path {
-          stroke: #000;
+          stroke: $color-black;
           transition: all 0.5s ease-in-out;
         }
       }
@@ -570,7 +570,7 @@ export default {
     }
     &__user {
       height: 10%;
-      border-top: 0.25px solid #cccccc80;
+      border-top: 0.25px solid $color-grey-light;
       display: flex;
       align-items: center;
       justify-content: flex-start;
@@ -647,7 +647,7 @@ export default {
           &.user {
             justify-content: end;
             .chat__content__main__messages__item__text {
-              background-color: #34b990;
+              background-color: $color-green;
               border-bottom-right-radius: 0;
             }
           }
@@ -673,16 +673,16 @@ export default {
       justify-content: center;
       &__input {
         border-radius: 10px;
-        background: #f7f9fb;
+        background: $color-grey-faint;
         border: 0;
-        color: #000;
+        color: $color-black;
         padding: 20px;
         width: 100%;
         &:focus {
           outline: none;
         }
         &::placeholder {
-          color: #cbcdce;
+          color: $color-grey-mid;
         }
       }
 

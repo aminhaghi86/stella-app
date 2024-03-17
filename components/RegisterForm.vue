@@ -73,6 +73,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/scss/_colors.scss";
 @import "@/assets/scss/components/button.scss";
 .register-form {
   width: 400px;
@@ -102,7 +103,7 @@ export default {
   display: block;
   width: 100%;
   padding: 1rem;
-  border: 1px solid #f0f0f0;
+  border: 1px solid $color-grey-form;
   border-radius: 1rem;
   box-sizing: border-box;
   &::placeholder {

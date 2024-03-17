@@ -2,10 +2,7 @@
   font-family: "Inter";
   src: url("/fonts/InterVariableFont.ttf") format("ttf");
 }
-
 @import "@/assets/scss/components/button.scss";
-@import "@/assets/scss/components/input.scss";
-
 *,
 body {
   margin: 0;
