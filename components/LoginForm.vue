@@ -21,7 +21,14 @@
       />
     </div>
     <div class="form-group">
-      <button type="submit" class="button --wide-primary">Login</button>
+      <button
+        style="transform: translateY(60px); opacity: 0"
+        ref="button"
+        type="submit"
+        class="button --wide-primary"
+      >
+        Login
+      </button>
       <NuxtLink to="/register" class="register-link"
         >New User? Register Here</NuxtLink
       >
@@ -33,20 +40,36 @@
 <script>
 import axios from "axios";
 import Session from "~/utils/session";
-
 export default {
   mounted() {
     this.session = new Session();
     this.session.loadSession();
+    this.animateButton();
   },
   data() {
     return {
       email: "",
       password: "",
       loginError: null,
+      animateOnMount: true,
     };
   },
+
   methods: {
+    animateButton() {
+      const { gsap } = useGsap();
+      console.log(gsap);
+      const lasd = this.$refs["button"];
+      console.log(lasd);
+      gsap.to(this.$refs["button"], {
+        y: 0,
+        duration: 1,
+        opacity: 1,
+        ease: "bounce.out",
+      });
+    },
+
+    //
     //Handles login process, sends credentials, stores token in localstorage.
     async login() {
       try {
@@ -97,7 +120,7 @@ export default {
     cursor: pointer;
     display: inline-block;
     font-weight: bold;
-    font-size: .75rem;
+    font-size: 0.75rem;
   }
 }
 

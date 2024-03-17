@@ -13,5 +13,8 @@ export default defineNuxtConfig({
     private: {
       // Define private variables here (not exposed on client-side)
     },
+    build: {
+      transpile: ['gsap'],
+    },
   },
 });
