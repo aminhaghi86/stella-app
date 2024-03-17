@@ -1,22 +1,18 @@
 <template>
   <div class="register-page">
-   
-    <h1>register page</h1>
     <RegisterForm />
   </div>
 </template>
 
-<script>
-
-</script>
+<script></script>
 
 <style scoped>
-.register-page{
-    height: 100vh;
-    background-color: rgb(129, 129, 148);
-    overflow: hidden;
+.register-page {
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
-h1 {
-  text-align: center;
-}   
 </style>

@@ -1,6 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
+  css: ['~/assets/scss/main.scss'],
   runtimeConfig: {
     public: {
       SOCKET_HOST: process.env.SOCKET_HOST,
@@ -11,6 +12,9 @@ export default defineNuxtConfig({
     },
     private: {
       // Define private variables here (not exposed on client-side)
+    },
+    build: {
+      transpile: ['gsap'],
     },
   },
 });

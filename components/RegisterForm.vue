@@ -1,18 +1,18 @@
 <template>
   <form @submit.prevent="handleSubmit" class="register-form">
     <div class="form-group">
-      <label for="email" class="form-label">Email:</label>
       <input
         type="email"
         id="email"
         v-model="email"
         required
         class="form-control"
+        placeholder="Username"
       />
     </div>
     <div class="form-group">
-      <label for="password" class="form-label">Password:</label>
       <input
+        placeholder="Password"
         type="password"
         id="password"
         v-model="password"
@@ -20,8 +20,12 @@
         class="form-control"
       />
     </div>
-    <button type="submit" class="btn btn-primary">Register</button>
-    <NuxtLink to="/login">go to Login</NuxtLink>
+    <div class="form-group">
+      <button type="submit" class="button --wide-primary">Register</button>
+      <NuxtLink to="/login" class="login__link"
+        >Existing User? Login Here</NuxtLink
+      >
+    </div>
   </form>
 </template>
 
@@ -68,39 +72,43 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import "@/assets/scss/_colors.scss";
+@import "@/assets/scss/components/button.scss";
 .register-form {
-  max-width: 600px;
+  width: 400px;
   margin: 0 auto;
-  padding: 1rem;
+  padding: 3rem;
+  background-color: #f0f0f0;
+  border-radius: 1rem;
 }
 
 .form-group {
   margin-bottom: 1rem;
-}
-
-.form-label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: bold;
+  .login__link {
+    background: none;
+    color: #007bff;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 0.25rem;
+    text-decoration: none;
+    cursor: pointer;
+    display: inline-block;
+    font-weight: bold;
+    font-size: 0.75rem;
+  }
 }
 
 .form-control {
   display: block;
   width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  padding: 1rem;
+  border: 1px solid $color-grey-form;
+  border-radius: 1rem;
   box-sizing: border-box;
-}
-
-.btn-primary {
-  background-color: #007bff;
-  color: white;
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+  &::placeholder {
+    color: #d6d8d9;
+  }
 }
 
 .error-message {

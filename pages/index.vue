@@ -1,26 +1,96 @@
 <template>
-  <div class="container chat-container">
-    <button @click="logout" class="logout-btn">Logout</button>
-    <h1>Welcome to Chat!</h1>
-
-    <div class="chat-input">
-      <h2>chat</h2>
-      <input
-        type="text"
-        v-model="message"
-        @keyup.enter="sendMessage"
-        placeholder="Enter something..."
-      />
-      <button @click="sendMessage" class="send-btn">Send</button>
+  <div class="chat">
+    <div class="chat__header">
+      <div class="chat__header__actions">
+        <button
+          class="chat__header__actions__new-chat button --wide-secondary"
+          @click="clearMessage()"
+        >
+          <AddButton /> New Chat
+        </button>
+        <div class="chat__header__actions__contacts">
+          <div class="chat__header__actions__contacts__item">
+            <MessageSvg />
+            <span class="chat__header__actions__contacts__item__name"
+              >AI chat Tool</span
+            >
+          </div>
+          <div class="chat__header__actions__contacts__item">
+            <MessageSvg />
+            <span class="chat__header__actions__contacts__item__name"
+              >AI chat Tool</span
+            >
+          </div>
+          <div class="chat__header__actions__contacts__item">
+            <MessageSvg />
+            <span class="chat__header__actions__contacts__item__name"
+              >AI chat Tool</span
+            >
+          </div>
+        </div>
+      </div>
+      <div class="chat__header__chat"></div>
+      <div class="chat__header__user">
+        <button
+          @click="logout"
+          class="chat__header__user__logout button --white"
+        >
+          <LogoutSvg />Logout
+        </button>
+        <img src="" alt="" class="chat__header__user__avatar" />
+      </div>
     </div>
-    <hr />
-    <ul class="chat-messages">
-      <li v-for="message in messages" :key="message.text">
-        <span :style="{ color: message.color }">
-          {{ message.text }}
-        </span>
-      </li>
-    </ul>
+    <div class="chat__content">
+      <div class="chat__content__main">
+        <div class="chat__content__main__welcome">
+          <h1 class="chat__content__main__welcome__title">VISS AI</h1>
+          <img
+            src="/logo-black.png"
+            alt="logo"
+            class="chat__content__main__welcome__icon"
+          />
+          <p class="chat__content__main__welcome__description">
+            STELLA is a multi-agent framework for conversational agents that
+            incorporates Large Language Models.
+          </p>
+        </div>
+
+        <ul v-if="hasMessages" class="chat__content__main__messages">
+          <li
+            v-for="message in messages"
+            :key="message.text"
+            :class="{
+              chat__content__main__messages__item: true,
+              user: message.type === 'user',
+              stella: message.type === 'stella',
+            }"
+          >
+            <span class="chat__content__main__messages__item__text">
+              {{ message.text }}
+            </span>
+          </li>
+          <li
+            v-if="waiting_for_response"
+            class="chat__content__main__messages__item stella"
+          >
+            <LoadingEffect />
+          </li>
+        </ul>
+      </div>
+      <div class="chat__content__send">
+        <input
+          type="text"
+          v-model="message"
+          :required="true"
+          @keyup.enter="sendMessage"
+          placeholder="Enter something..."
+          class="chat__content__send__input"
+        />
+        <button @click="sendMessage" class="chat__content__send__button">
+          <SendSvg :style="{ color: buttonColor }" />
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -28,10 +98,9 @@
 import axios from "axios";
 import io from "socket.io-client";
 import Session from "~/utils/session";
-
 export default {
   middleware: "authenticated",
-  name: "home",
+  name: "chat",
   data() {
     return {
       should_wait_for_response: true,
@@ -41,7 +110,6 @@ export default {
       message: "",
     };
   },
-
   mounted() {
     const $config = useRuntimeConfig();
     this.config = {
@@ -54,8 +122,22 @@ export default {
     this.configure();
     this.connect();
   },
+  computed: {
+    buttonColor() {
+      return this.message ? "#34B990" : "#9FA1A2";
+    },
+    hasMessages() {
+      return this.messages.length > 0;
+    },
+  },
 
   methods: {
+    //
+    clearMessage() {
+      console.log("sd");
+      this.messages = [];
+    },
+    //
     // creates a session manager for login and chat info, and defines the chat path on the server.
     configure() {
       this.socket_url = `${this.config.ssl ? "https://" : "http://"}${
@@ -113,11 +195,14 @@ export default {
       if (!!message) {
         this.messages.push({
           type: "stella",
-          color: "blue",
+          color: "#00000097",
+          size: "1rem",
           text: message,
         });
       }
+
       this.waiting_for_response = false;
+      console.log("message", this.messages);
     },
 
     async onDisconnect(...arg) {
@@ -177,7 +262,7 @@ export default {
         const response = await axios.get(this.composeUrl("user"), {
           headers: this.authHeaders(),
         });
-
+        console.log("user res", response);
         return response.data.user;
       } catch (e) {
         throw new Error(
@@ -195,7 +280,14 @@ export default {
             headers: this.authHeaders(),
           }
         );
-
+        const chat = await axios.get(
+          this.composeUrl(`workspace/${workspace_id}/chats`),
+          {
+            headers: this.authHeaders(),
+          }
+        );
+        console.log("chat", chat);
+        console.log("response workspace", response);
         return response.data.workspace;
       } catch (e) {
         throw new Error(`Failed to get workspace. (${e.statusCode}).`);
@@ -212,13 +304,13 @@ export default {
             headers: this.authHeaders(),
           }
         );
-
+        console.log("response connect workspace", response);
         this.session.workspace_id = workspace_id;
         this.session.saveSession();
 
         await this.createChat(workspace_id);
         await this.connectToChat();
-
+        console.log("response.data.workspace", response.data.workspace);
         return response.data.workspace;
       } catch (ex) {
         console.log(`Failed to get workspace.`, ex);
@@ -319,6 +411,7 @@ export default {
             `Request to get chat connection authorization failed. Status code: ${this.response.status}, Message: ${this.response.data}`
           );
         }
+        console.log("response", response);
         const connectionString = response.data.string;
         this.session.chat_connection_string = connectionString;
         this.session.saveSession();
@@ -334,9 +427,15 @@ export default {
     // And then transmits the message through the established WebSocket connection, awaiting a response from the server.
     async sendMessage() {
       const message = this.message;
+      if (!this.message) {
+        // Handle empty name
+        console.error("Name is required!");
+        return;
+      }
       this.messages.push({
         type: "user",
-        color: "red",
+        color: "#000000",
+        size: "1.2rem",
         text: message,
       });
       // Check if we're currently connected to a chat/workspace
@@ -348,10 +447,12 @@ export default {
       if (this.waiting_for_response) {
         return;
       }
+      //
 
+      //
       // If the chat id is not provided, use the one from the session
       const chat_id = this.session.chat_id;
-
+      this.message = "";
       try {
         // Get a message authorization string from the server
         const response = await axios.get(
@@ -399,65 +500,224 @@ export default {
 };
 </script>
 
-<style scoped>
-.container {
-  background: linear-gradient(40deg, #ccc, #ccc, #cddd);
-  max-height: 100vh;
-  padding: 1rem;
-}
-.chat-container {
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  margin: 0 auto;
-  max-width: 960px;
-  text-align: center;
-  overflow: scroll;
-  height: 100vh;
-}
+<style lang="scss">
+@import "@/assets/scss/_colors.scss";
+@import "@/assets/scss/components/button.scss";
+.chat {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  &__header {
+    position: sticky;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid $color-grey-light;
+    height: 100%;
+    &__actions {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      height: 20%;
+      &__new-chat {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        .add-button {
+          width: 20px;
+          height: 20px;
+        }
+        &:hover {
+          border: 0.5px solid $color-black;
+          background-color: $color-white;
+          color: $color-black;
+        }
+        &:hover .add-button path {
+          stroke: $color-black;
+          transition: all 0.5s ease-in-out;
+        }
+      }
 
-.logout-btn {
-  background-color: #f00;
-  color: #fff;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
+      &__contacts {
+        width: 100%;
+        padding: 1rem 0 0 2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+        &__item {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 0.25rem;
+          &__name {
+            font-size: 1rem;
+            @media (max-width: 768px) {
+              font-size: 0.5rem;
+            }
+          }
+        }
+        @media (max-width: 768px) {
+          padding: 1rem;
+        }
+      }
+      @media (max-width: 768px) {
+        padding: 1rem 0rem;
+        height: 30%;
+      }
+    }
+    &__chat {
+      height: 70%;
+      overflow: scroll;
+    }
+    &__user {
+      height: 10%;
+      border-top: 0.25px solid $color-grey-light;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      &__logout {
+        width: 80%;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 0.5rem;
+        .logout-svg {
+          width: 20px;
+          height: 20px;
+        }
+        &:hover .logout-svg path {
+          stroke: white;
+          transition: all 0.5s ease-in-out;
+        }
+      }
 
-.chat-input {
-  display: flex;
-  flex-direction: column;
-  margin-top: 10px;
-  text-align: center;
-  gap: 10px;
-}
-.chat-input input {
-  padding: 8px 16px;
-  border: none;
-  border-bottom: 1px solid #cccccc90;
-}
-.chat-input input:focus {
-  outline: none;
-}
+      &__avatar {
+      }
+    }
+  }
 
-.send-btn {
-  background-color: #4caf50;
-  color: #fff;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-left: 10px;
-}
+  &__content {
+    height: 100vh;
+    overflow-y: scroll;
+    &__main {
+      min-height: 80vh;
 
-.chat-messages {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
+      &__welcome {
+        padding: 1rem 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: center;
+        justify-content: center;
+        &__title {
+          margin: 0;
+        }
 
-.chat-messages li {
-  margin-bottom: 10px;
-  text-align: left;
+        &__icon {
+          width: 200px;
+          height: 200px;
+          object-fit: contain;
+        }
+
+        &__description {
+          padding: 0;
+          @media (max-width: 768px) {
+            padding: 0 2rem;
+            font-size: 0.75rem;
+          }
+        }
+      }
+
+      &__messages {
+        max-width: 60rem;
+        list-style: none;
+        padding: 1rem 2rem;
+        display: flex;
+        flex-direction: column;
+        margin: 0 auto;
+        gap: 2rem;
+
+        &__item {
+          animation: slideUp 0.5s ease-in-out forwards;
+          display: flex;
+
+          &__text {
+            max-width: 30rem;
+            transform: translateY(0);
+            border-radius: 2rem;
+            display: block;
+            padding: 1rem;
+            line-height: 1.5;
+          }
+          &.user {
+            justify-content: end;
+            .chat__content__main__messages__item__text {
+              background-color: $color-green;
+              border-bottom-right-radius: 0;
+            }
+          }
+          &.stella {
+            justify-content: start;
+            .chat__content__main__messages__item__text {
+              background-color: #cbcdce;
+              border-bottom-left-radius: 0;
+            }
+          }
+        }
+      }
+    }
+
+    &__send {
+      height: 20vh;
+      margin: 0 auto;
+      width: 70%;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      &__input {
+        border-radius: 10px;
+        background: $color-grey-faint;
+        border: 0;
+        color: $color-black;
+        padding: 20px;
+        width: 100%;
+        &:focus {
+          outline: none;
+        }
+        &::placeholder {
+          color: $color-grey-mid;
+        }
+      }
+
+      &__button {
+        border: none;
+        background: none;
+        border-radius: 7px;
+        position: absolute;
+        right: 5px;
+      }
+    }
+  }
+  @media (max-width: 968px) {
+    grid-template-columns: 1fr 3fr;
+  }
+}
+@keyframes slideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(100vh);
+  }
+  1% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 </style>
