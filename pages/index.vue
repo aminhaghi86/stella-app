@@ -43,7 +43,7 @@
     <div class="chat__content">
       <div class="chat__content__main">
         <div class="chat__content__main__welcome">
-          <h1 class="chat__content__main__welcome__title">VISS AI.</h1>
+          <h1 class="chat__content__main__welcome__title">VISS AI</h1>
           <img
             src="/logo-black.png"
             alt="logo"
@@ -530,8 +530,8 @@ export default {
           height: 20px;
         }
         &:hover {
-          border: 0.5px solid $color-black; 
-          background-color: $color-white; 
+          border: 0.5px solid $color-black;
+          background-color: $color-white;
           color: $color-black;
         }
         &:hover .add-button path {
@@ -554,14 +554,18 @@ export default {
           gap: 0.25rem;
           &__name {
             font-size: 1rem;
+            @media (max-width: 768px) {
+              font-size: 0.5rem;
+            }
           }
         }
         @media (max-width: 768px) {
-          padding: 0;
+          padding: 1rem;
         }
       }
       @media (max-width: 768px) {
-        padding: 0;
+        padding: 1rem 0rem;
+        height: 30%;
       }
     }
     &__chat {
@@ -620,6 +624,11 @@ export default {
         }
 
         &__description {
+          padding: 0;
+          @media (max-width: 768px) {
+            padding: 0 2rem;
+            font-size: .75rem;
+          }
         }
       }
 
@@ -697,9 +706,6 @@ export default {
   }
   @media (max-width: 968px) {
     grid-template-columns: 1fr 3fr;
-  }
-  @media (max-width: 600px) {
-    grid-template-columns: 1fr 2.5fr;
   }
 }
 @keyframes slideUp {
