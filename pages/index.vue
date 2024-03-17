@@ -524,7 +524,6 @@ export default {
         align-items: center;
         justify-content: center;
         gap: 0.5rem;
-        transition: all 0.5s ease-in-out;
         .add-button {
           width: 20px;
           height: 20px;
@@ -627,7 +626,7 @@ export default {
           padding: 0;
           @media (max-width: 768px) {
             padding: 0 2rem;
-            font-size: .75rem;
+            font-size: 0.75rem;
           }
         }
       }
