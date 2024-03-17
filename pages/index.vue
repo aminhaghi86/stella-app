@@ -505,7 +505,7 @@ export default {
 @import "@/assets/scss/components/button.scss";
 .chat {
   display: grid;
-  grid-template-columns: 1fr 5fr;
+  grid-template-columns: 1fr 4fr;
   &__header {
     position: sticky;
     display: flex;
@@ -556,6 +556,12 @@ export default {
             font-size: 1rem;
           }
         }
+        @media (max-width: 768px) {
+          padding: 0;
+        }
+      }
+      @media (max-width: 768px) {
+        padding: 0;
       }
     }
     &__chat {
@@ -608,6 +614,9 @@ export default {
         }
 
         &__icon {
+          width: 200px;
+          height: 200px;
+          object-fit: contain;
         }
 
         &__description {
@@ -685,6 +694,12 @@ export default {
         right: 5px;
       }
     }
+  }
+  @media (max-width: 968px) {
+    grid-template-columns: 1fr 3fr;
+  }
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr 2.5fr;
   }
 }
 @keyframes slideUp {

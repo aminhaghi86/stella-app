@@ -27,5 +27,8 @@
   }
   &.--wide-secondary {
     width: 90%;
+    @media (max-width: 768px) {
+      font-size: 0.75rem;
+    }
   }
 }
