@@ -3,7 +3,7 @@
     <div class="chat__header">
       <div class="chat__header__actions">
         <button
-          class="chat__header__actions__new-chat button --wide"
+          class="chat__header__actions__new-chat button --wide-secondary"
           @click="clearMessage()"
         >
           <AddButton /> New Chat

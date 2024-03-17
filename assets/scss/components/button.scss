@@ -20,7 +20,12 @@
       color: #fff;
     }
   }
-  &.--wide {
+  &.--wide-primary {
+    width: 100%;
+    border-radius: 1rem;
+    padding: 1rem;
+  }
+  &.--wide-secondary {
     width: 90%;
   }
 }
