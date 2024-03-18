@@ -1,31 +1,15 @@
 <template>
   <div class="chat">
- <ChatHeader :clearMessage="clearMessage" :logout="logout"/>
+    <ChatHeader :clearMessage="clearMessage" :logout="logout" />
     <div class="chat__content">
       <div class="chat__content__main">
-       <ChatWelcome/>
+        <ChatWelcome />
 
-        <ul v-if="hasMessages" class="chat__content__main__messages">
-          <li
-            v-for="message in messages"
-            :key="message.text"
-            :class="{
-              chat__content__main__messages__item: true,
-              user: message.type === 'user',
-              stella: message.type === 'stella',
-            }"
-          >
-            <span class="chat__content__main__messages__item__text">
-              {{ message.text }}
-            </span>
-          </li>
-          <li
-            v-if="waiting_for_response"
-            class="chat__content__main__messages__item stella"
-          >
-            <LoadingEffect />
-          </li>
-        </ul>
+        <ChatMessage
+          :hasMessages="hasMessages"
+          :messages="messages"
+          :waiting_for_response="waiting_for_response"
+        />
       </div>
       <div class="chat__content__send">
         <input
