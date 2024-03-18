@@ -1,95 +1,22 @@
 <template>
   <div class="chat">
-    <div class="chat__header">
-      <div class="chat__header__actions">
-        <button
-          class="chat__header__actions__new-chat button --wide-secondary"
-          @click="clearMessage()"
-        >
-          <AddButton /> New Chat
-        </button>
-        <div class="chat__header__actions__contacts">
-          <div class="chat__header__actions__contacts__item">
-            <MessageSvg />
-            <span class="chat__header__actions__contacts__item__name"
-              >AI chat Tool</span
-            >
-          </div>
-          <div class="chat__header__actions__contacts__item">
-            <MessageSvg />
-            <span class="chat__header__actions__contacts__item__name"
-              >AI chat Tool</span
-            >
-          </div>
-          <div class="chat__header__actions__contacts__item">
-            <MessageSvg />
-            <span class="chat__header__actions__contacts__item__name"
-              >AI chat Tool</span
-            >
-          </div>
-        </div>
-      </div>
-      <div class="chat__header__chat"></div>
-      <div class="chat__header__user">
-        <button
-          @click="logout"
-          class="chat__header__user__logout button --white"
-        >
-          <LogoutSvg />Logout
-        </button>
-        <img src="" alt="" class="chat__header__user__avatar" />
-      </div>
-    </div>
+    <ChatHeader :clearMessage="clearMessage" :logout="logout" />
     <div class="chat__content">
       <div class="chat__content__main">
-        <div class="chat__content__main__welcome">
-          <h1 class="chat__content__main__welcome__title">VISS AI</h1>
-          <img
-            src="/logo-black.png"
-            alt="logo"
-            class="chat__content__main__welcome__icon"
-          />
-          <p class="chat__content__main__welcome__description">
-            STELLA is a multi-agent framework for conversational agents that
-            incorporates Large Language Models.
-          </p>
-        </div>
+        <ChatWelcome />
 
-        <ul v-if="hasMessages" class="chat__content__main__messages">
-          <li
-            v-for="message in messages"
-            :key="message.text"
-            :class="{
-              chat__content__main__messages__item: true,
-              user: message.type === 'user',
-              stella: message.type === 'stella',
-            }"
-          >
-            <span class="chat__content__main__messages__item__text">
-              {{ message.text }}
-            </span>
-          </li>
-          <li
-            v-if="waiting_for_response"
-            class="chat__content__main__messages__item stella"
-          >
-            <LoadingEffect />
-          </li>
-        </ul>
-      </div>
-      <div class="chat__content__send">
-        <input
-          type="text"
-          v-model="message"
-          :required="true"
-          @keyup.enter="sendMessage"
-          placeholder="Enter something..."
-          class="chat__content__send__input"
+        <ChatMessage
+          :hasMessages="hasMessages"
+          :messages="messages"
+          :waiting_for_response="waiting_for_response"
         />
-        <button @click="sendMessage" class="chat__content__send__button">
-          <SendSvg :style="{ color: buttonColor }" />
-        </button>
       </div>
+      <ChatContent
+        :message="message"
+        :sendMessage="sendMessage"
+        :buttonColor="buttonColor"
+        @update:message="message = $event"
+      />
     </div>
   </div>
 </template>
