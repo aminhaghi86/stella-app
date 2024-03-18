@@ -11,19 +11,12 @@
           :waiting_for_response="waiting_for_response"
         />
       </div>
-      <div class="chat__content__send">
-        <input
-          type="text"
-          v-model="message"
-          :required="true"
-          @keyup.enter="sendMessage"
-          placeholder="Enter something..."
-          class="chat__content__send__input"
-        />
-        <button @click="sendMessage" class="chat__content__send__button">
-          <SendSvg :style="{ color: buttonColor }" />
-        </button>
-      </div>
+      <ChatContent
+        :message="message"
+        :sendMessage="sendMessage"
+        :buttonColor="buttonColor"
+        @update:message="message = $event"
+      />
     </div>
   </div>
 </template>
