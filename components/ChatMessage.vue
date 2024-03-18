@@ -22,7 +22,7 @@
         </ul>
 </template>
 
-<script>
+<script setup>
 const props = defineProps({
   hasMessages: Function,
   messages: Array,
