@@ -15,4 +15,4 @@
 
 <script></script>
 
-<style lang="scss" scped></style>
+<style lang="scss"></style>

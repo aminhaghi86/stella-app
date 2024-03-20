@@ -31,5 +31,7 @@ const props = defineProps({
 </script>
 
 <style lang="scss" scoped>
-
+@import "@/assets/scss/_colors.scss";
+@import "@/assets/scss/components/button.scss";
+ 
 </style>

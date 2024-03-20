@@ -1,26 +1,32 @@
 <template>
   <div class="chat__header__actions__contacts">
-    <div class="chat__header__actions__contacts__item">
+    <div
+      v-for="(contact, index) in contacts"
+      :key="index"
+      class="chat__header__actions__contacts__item"
+    >
       <MessageSvg />
-      <span class="chat__header__actions__contacts__item__name"
-        >AI chat Tool</span
-      >
-    </div>
-    <div class="chat__header__actions__contacts__item">
-      <MessageSvg />
-      <span class="chat__header__actions__contacts__item__name"
-        >AI chat Tool</span
-      >
-    </div>
-    <div class="chat__header__actions__contacts__item">
-      <MessageSvg />
-      <span class="chat__header__actions__contacts__item__name"
-        >AI chat Tool</span
-      >
+      <span :class="['chat__header__actions__contacts__item__name']">{{
+        contact.name
+      }}</span>
     </div>
   </div>
 </template>
 
-<script></script>
+<script>
+export default {
+  data() {
+    return {
+      contacts: [
+        { name: "AI Chat Tool" },
+        { name: "AI Chat Tool" },
+        { name: "AI Chat Tool" },
+      ],
+    };
+  },
+};
+</script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+ 
+</style>

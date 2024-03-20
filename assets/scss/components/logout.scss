@@ -1,0 +1,26 @@
+.chat__header__user {
+  height: 10%;
+  border-top: 0.25px solid $color-grey-light;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  &__logout {
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    .logout-svg {
+      width: 20px;
+      height: 20px;
+    }
+    &:hover .logout-svg path {
+      stroke: white;
+      transition: all 0.5s ease-in-out;
+    }
+  }
+
+  &__avatar {
+  }
+}
