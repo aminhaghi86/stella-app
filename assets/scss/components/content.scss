@@ -1,0 +1,32 @@
+.chat__content__send {
+    height: 20vh;
+    margin: 0 auto;
+    width: 70%;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &__input {
+      border-radius: 10px;
+      background: $color-grey-faint;
+      border: 0;
+      color: $color-black;
+      padding: 20px;
+      width: 100%;
+      &:focus {
+        outline: none;
+      }
+      &::placeholder {
+        color: $color-grey-mid;
+      }
+    }
+
+    &__button {
+      border: none;
+      background: none;
+      border-radius: 7px;
+      position: absolute;
+      right: 5px;
+    }
+  }

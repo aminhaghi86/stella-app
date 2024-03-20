@@ -3,6 +3,13 @@
   src: url("/fonts/InterVariableFont.ttf") format("ttf");
 }
 @import "@/assets/scss/components/button.scss";
+@import "@/assets/scss/_colors.scss";
+@import "@/assets/scss/components/contact.scss";
+@import "@/assets/scss/components/content.scss";
+@import "@/assets/scss/components/welcome.scss";
+@import "@/assets/scss/components/header.scss";
+@import "@/assets/scss/components/logout.scss";
+@import "@/assets/scss/components/message.scss";
 *,
 body {
   margin: 0;

@@ -1,0 +1,37 @@
+.chat__content__main__messages {
+    max-width: 60rem;
+    list-style: none;
+    padding: 1rem 2rem;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    gap: 2rem;
+
+    &__item {
+      animation: slideUp 0.5s ease-in-out forwards;
+      display: flex;
+
+      &__text {
+        max-width: 30rem;
+        transform: translateY(0);
+        border-radius: 2rem;
+        display: block;
+        padding: 1rem;
+        line-height: 1.5;
+      }
+      &.user {
+        justify-content: end;
+        .chat__content__main__messages__item__text {
+          background-color: $color-green;
+          border-bottom-right-radius: 0;
+        }
+      }
+      &.stella {
+        justify-content: start;
+        .chat__content__main__messages__item__text {
+          background-color: #cbcdce;
+          border-bottom-left-radius: 0;
+        }
+      }
+    }
+  }
