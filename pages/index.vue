@@ -428,8 +428,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import "@/assets/scss/_colors.scss";
-@import "@/assets/scss/components/button.scss";
 .chat {
   display: grid;
   grid-template-columns: 1fr 4fr;

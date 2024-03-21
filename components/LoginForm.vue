@@ -22,7 +22,7 @@
     </div>
     <div class="form-group">
       <button
-        style="transform: translateY(60px); opacity: 0"
+        style="transform: scale(0.2) translateY(160px); opacity: 0"
         ref="button"
         type="submit"
         class="button --wide-primary"
@@ -59,12 +59,12 @@ export default {
     animateButton() {
       const { gsap } = useGsap();
       console.log(gsap);
-      const lasd = this.$refs["button"];
-      console.log(lasd);
-      gsap.to(this.$refs["button"], {
+      const moveEl = this.$refs["button"];
+      gsap.to(moveEl, {
         y: 0,
         duration: 1,
         opacity: 1,
+        scale: 1,
         ease: "bounce.out",
       });
     },
