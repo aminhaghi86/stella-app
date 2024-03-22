@@ -4,7 +4,12 @@
 This project provides a streamlined setup process for a Nuxt.js application that seamlessly integrates with the Stella framework. It offers a convenient environment for building interactive chat applications or leveraging Stella's features within your Nuxt projects.
 
 ## Demo
+New Update Demo
 
+https://github.com/aminhaghi86/stella-app/assets/90243818/c634610f-ccd5-45ff-b7b2-16b388a62f75
+
+
+Fiest Demo 
 https://github.com/aminhaghi86/stella-app/assets/90243818/15fdc551-822e-440f-8ab2-cee6ae022b16
 
 
